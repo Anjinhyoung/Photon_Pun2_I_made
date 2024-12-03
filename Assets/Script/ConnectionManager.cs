@@ -104,6 +104,36 @@ public class ConnectionManager : MonoBehaviourPunCallbacks
     {
         base.OnRoomListUpdate(roomList);
 
+        foreach(RoomInfo room in roomList)
+        {
+            // 만일, 갱신된 룸 정보가 제거 리스트에  있다면
+            if (room.RemovedFromList)
+            {
+                // cachedRoomList에서 해당 룸을 제거한다.
+                cachedRoomList.Remove(room);
+            }
+
+            else
+            {
+                // 만일, 이미 cachedRoomList에 있는 방이라면... (인원 수 변경 이런 거 때문에)
+                if (cachedRoomList.Contains(room))
+                {
+                    // 기존 룸 정보를 제거한다.
+                    cachedRoomList.Remove(room);
+                }
+
+                // 새 룸을 cachedRoomList에 추가한다.
+                cachedRoomList.Add(room);
+            }
+        }
+
+        
+        // UI 업데이트를 위해서 기존의 모든 방 정보를 삭제하기
+        for(int i = 0; i < scrollContent.childCount; i++)
+        {
+            Destroy(scrollContent.GetChild(i)); // Transform만 삭제 해도 오브젝트가 삭제된다.
+        }
+
         // 방 정보 보여주기
         foreach (RoomInfo room in cachedRoomList)
         {
