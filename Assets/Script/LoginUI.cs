@@ -8,11 +8,18 @@ public class LoginUI : MonoBehaviour
 {
     public static LoginUI loginUI;
 
-    public GameObject login;
+    // 로그인
     public Button startButton;
     public Button exitButton;
+    public GameObject login;
     public TMP_InputField id;
     public TMP_InputField password;
+
+    // 방 만들기 or 방 입장
+    public GameObject createOrJoin;
+    public TMP_InputField[] createRoomSettings;
+
+
 
 
     private void Awake()
@@ -34,9 +41,10 @@ public class LoginUI : MonoBehaviour
 
     public void CreateOrJoin()
     {
-        login.SetActive(false);
         startButton.gameObject.SetActive(false);
         exitButton.gameObject.SetActive(false);
+        login.SetActive(false);
+        createOrJoin.SetActive(true);
     }
 
 
