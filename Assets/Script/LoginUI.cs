@@ -19,6 +19,9 @@ public class LoginUI : MonoBehaviour
     public GameObject createOrJoin;
     public TMP_InputField[] createRoomSettings;
 
+    // πÊ ¿‘¿Â
+    public GameObject enterRoomButton;
+
 
 
 
@@ -47,6 +50,10 @@ public class LoginUI : MonoBehaviour
         createOrJoin.SetActive(true);
     }
 
+    public void Out()
+    {
+        Application.Quit();
+    }
 
 
 }

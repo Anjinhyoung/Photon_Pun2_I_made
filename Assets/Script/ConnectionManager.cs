@@ -6,9 +6,13 @@ using System.Reflection;
 using Photon.Realtime;
 using System;
 using Hashtable = ExitGames.Client.Photon.Hashtable; // photon hashtable로 강제
+using UnityEngine.UI;
 
 public class ConnectionManager : MonoBehaviourPunCallbacks
 {
+    // 로비(create or join 화면)
+    [SerializeField] Button enterRoomButton;
+
     [SerializeField] GameObject roomInfo_Prefab;
     [SerializeField] Transform scrollContent;
     List<RoomInfo> cachedRoomList = new List<RoomInfo>();
@@ -62,6 +66,7 @@ public class ConnectionManager : MonoBehaviourPunCallbacks
     public override void OnJoinedLobby()
     {
         base.OnJoinedLobby();
+        print(MethodInfo.GetCurrentMethod().Name + " is Call!");
         LoginUI.loginUI.CreateOrJoin();
     }
 
@@ -99,7 +104,33 @@ public class ConnectionManager : MonoBehaviourPunCallbacks
         print(MethodInfo.GetCurrentMethod().Name + " is Call!");
     }
 
-    // 현재 로비에서 룸의 변경사항을 알려주는 콜백 함수(내부적으로 룸 정보를 동기화하며, 이를 바탕으로 roomList가 업데이트 된다.
+    // 이 함수가 있어야 다른 Scene으로 입장할 수 있다.
+    public override void OnJoinedRoom()
+    {
+        base.OnJoinedRoom();
+
+        // 성공적으로 방에 입장되었음을 알려준다.
+        print(MethodInfo.GetCurrentMethod().Name + " is Call!");
+
+        // 방에 입장한 친구들은 모두 1번 씬으로 이동하자!
+        PhotonNetwork.LoadLevel(1);
+    }
+
+    public override void OnJoinRandomFailed(short returnCode, string message)
+    {
+        base.OnJoinRandomFailed(returnCode, message);
+
+        // 룸에 입장이 실패한 이유를 출력
+        Debug.LogError(message);
+    }
+
+    public void EnterRoom()
+    {
+        LoginUI.loginUI.enterRoomButton.SetActive(true);
+        LoginUI.loginUI.createOrJoin.SetActive(false);
+    }
+
+    // 현재 로비에서 룸의 변경사항을 알려주는 콜백 함수(내부적으로 룸 정보를 동기화하며, 이를 바탕으로 roomList가 업데이트 된다. 자동으로 실행된다.)
     public override void OnRoomListUpdate(List<RoomInfo> roomList)
     {
         base.OnRoomListUpdate(roomList);
@@ -127,7 +158,6 @@ public class ConnectionManager : MonoBehaviourPunCallbacks
             }
         }
 
-        
         // UI 업데이트를 위해서 기존의 모든 방 정보를 삭제하기
         for(int i = 0; i < scrollContent.childCount; i++)
         {
@@ -149,4 +179,17 @@ public class ConnectionManager : MonoBehaviourPunCallbacks
             });
         }
     }
+
+    // 룸에 다른 플레이어가 입장했을 때 콜백 함수
+    public override void OnPlayerEnteredRoom(Player newPlayer)
+    {
+        base.OnPlayerEnteredRoom(newPlayer);
+    }
+
+    // 룸에 다른 플레이어가 퇴장했을 때의 콜백 함수
+    public override void OnPlayerLeftRoom(Player otherPlayer)
+    {
+        base.OnPlayerLeftRoom(otherPlayer);
+    }
+
 }

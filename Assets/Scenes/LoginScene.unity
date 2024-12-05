@@ -1937,7 +1937,7 @@ MonoBehaviour:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
-    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_SelectedColor: {r: 0, g: 0.6602621, b: 1, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
@@ -2164,7 +2164,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 686698611}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1413464963}
+        m_TargetAssemblyTypeName: LoginUI, Assembly-CSharp
+        m_MethodName: Out
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &686698611
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2300,7 +2312,7 @@ MonoBehaviour:
   m_CharacterValidation: 0
   m_RegexValue: 
   m_GlobalPointSize: 14
-  m_CharacterLimit: 0
+  m_CharacterLimit: 5
   m_OnEndEdit:
     m_PersistentCalls:
       m_Calls: []
@@ -4286,6 +4298,7 @@ MonoBehaviour:
   createRoomSettings:
   - {fileID: 2076694742}
   - {fileID: 99713493}
+  enterRoomButton: {fileID: 657368779}
 --- !u!1 &1427374951
 GameObject:
   m_ObjectHideFlags: 0
@@ -4368,7 +4381,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1427374954}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1938349140}
+        m_TargetAssemblyTypeName: ConnectionManager, Assembly-CSharp
+        m_MethodName: EnterRoom
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1427374954
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5249,6 +5274,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be26c3cbac33f21439cced31992b6728, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  enterRoomButton: {fileID: 0}
   roomInfo_Prefab: {fileID: 2659699677049172406, guid: 6622765eaf71b284d9ac15a188984858,
     type: 3}
   scrollContent: {fileID: 1264932308}
