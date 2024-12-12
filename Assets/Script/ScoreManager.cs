@@ -18,8 +18,11 @@ public class ScoreManager : MonoBehaviour
         set { AddScore(value); }
     }
 
-    // 현재 점수 Text
+    // 현재 내 점수 Text
     public TMP_Text textCurrentScroe;
+
+    // 현재 상대 점수 Text
+    public TMP_Text other_textCurrentScroe;
 
     private void Awake()
     {
