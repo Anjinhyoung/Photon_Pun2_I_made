@@ -12,11 +12,14 @@ public class ScoreManager : MonoBehaviour
     // 현재 점수
     int currentScore;
 
+
+    /* RPC 때문에 잠깐만
     public int CurrentScore
     {
         get { return currentScore; }
         set { AddScore(value); }
     }
+    */
 
     // 현재 내 점수 Text
     public TMP_Text textCurrentScroe;
@@ -37,7 +40,7 @@ public class ScoreManager : MonoBehaviour
     }
 
     // 점수 증가시키기
-    void AddScore(int addScore)
+    public void AddScore(int addScore)
     {
         // 현재 점수를 addValue 만큼 더하자
         currentScore += addScore;

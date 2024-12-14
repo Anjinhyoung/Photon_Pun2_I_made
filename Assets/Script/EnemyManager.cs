@@ -1,10 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
 
-public class EnemyManager : MonoBehaviour
+public class EnemyManager : MonoBehaviourPun
 {
-    [SerializeField] GameObject EnemyPrefab;
 
     private void Start()
     {
@@ -13,11 +13,10 @@ public class EnemyManager : MonoBehaviour
 
     IEnumerator SpawnTime()
     {
-        // 무한 루프로 적을 계속 생성
-        while(true)
+        // 무한 루프로 적을 계속 생성 또한 조건이 방장일 때만
+        while(true && PhotonNetwork.IsMasterClient)
         {
-            GameObject enemy = Instantiate(EnemyPrefab);
-            enemy.transform.position = transform.position;
+            GameObject enemy = PhotonNetwork.Instantiate("Enemy",transform.position,Quaternion.identity);
             yield return new WaitForSeconds(1.5f);
         }
     }

@@ -14,8 +14,6 @@ public class Fire : MonoBehaviourPun
     // 총알을 발사 가능지 여부 (처음에 발사 가능하게 할려고 true로 초기함)
     bool can_Fire = true;
 
-    
-
     private void Update()
     {
         if (Input.GetMouseButtonDown(0) && can_Fire && photonView.IsMine)
@@ -28,7 +26,7 @@ public class Fire : MonoBehaviourPun
     {
         GameObject realBullet;
 
-        realBullet = Instantiate(bulletPrefab, firePos.transform.position, firePos.transform.rotation);
+        realBullet = PhotonView.Instantiate(bulletPrefab, firePos.transform.position, firePos.transform.rotation);
 
         // 혹시 모르니까
         realBullet.transform.up = transform.up;

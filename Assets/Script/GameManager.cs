@@ -7,7 +7,9 @@ using Photon.Pun;
 public class GameManager : MonoBehaviourPunCallbacks
 {
     public static GameManager gameManager;
-    [SerializeField] GameObject myPlayer;
+
+    // Enemy가 추격하기 위해서 전역 변수가 필요하다.
+    public GameObject myPlayer;
 
     private void Awake()
     {
@@ -26,11 +28,14 @@ public class GameManager : MonoBehaviourPunCallbacks
         StartCoroutine(SpawnPlayer());
 
         // OnPhotonSerializeView 에서 데이터 전송 빈도 수 설정하기(per seconds)
-        PhotonNetwork.SerializationRate = 30;
-        // 대부분의 데이터 전송 빈도 수 설정하기(per seconds)
-        PhotonNetwork.SendRate = 30;
-    }
+        PhotonNetwork.SerializationRate = 60; //(초당) OnPhotonSerializeView 함수 호출 횟수  
 
+
+        // 대부분의 데이터 전송 빈도 수 설정하기(per seconds)
+        PhotonNetwork.SendRate = 60; // (초당)  클라이언트에서 네트워크 패킷(메시지)을 서버로 보내는 횟수
+
+        // SendRate >= SerializationRate
+    }
     IEnumerator SpawnPlayer()
     {
         // 룸에 입장이 완료될 때까지 기다린다.
@@ -48,5 +53,4 @@ public class GameManager : MonoBehaviourPunCallbacks
         // Resource 폴더에서만 찾는다
         myPlayer = PhotonNetwork.Instantiate("Aircraft", initPosition, Quaternion.identity);
     }
-
 }
