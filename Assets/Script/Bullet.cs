@@ -5,7 +5,7 @@ using Photon.Pun;
 public class Bullet : MonoBehaviourPun,IPunObservable
 {
     // 총알 속도
-    [SerializeField] float bullet_Speed = 3.0f;
+    [SerializeField] float bullet_Speed = 2.0f;
 
     // 총알의 네트워크, 로컬 포지션
     Vector3 otherPosition;
@@ -16,7 +16,7 @@ public class Bullet : MonoBehaviourPun,IPunObservable
     private void Start()
     {
         pv = GetComponent<PhotonView>();
-        PhotonView.Destroy(gameObject, 3.0f);
+        PhotonNetwork.Destroy(gameObject);
     }
 
     void Update()
@@ -41,6 +41,11 @@ public class Bullet : MonoBehaviourPun,IPunObservable
             PhotonNetwork.Destroy(other.gameObject);
         }
         // 다른 사람의 총알이 부딪혔을 경우
+
+        else if(other.gameObject.layer == LayerMask.NameToLayer("Enemy") && !pv.IsMine)
+        {
+            // rpc로 해야 하나?
+        }
     }
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)

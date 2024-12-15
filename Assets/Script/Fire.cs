@@ -5,9 +5,6 @@ using Photon.Pun;
 
 public class Fire : MonoBehaviourPun
 {
-    // ÃÑ¾Ë prefab
-    [SerializeField] GameObject bulletPrefab;
-
     // ÃÑ±¸
     [SerializeField] GameObject firePos;
 
@@ -26,7 +23,7 @@ public class Fire : MonoBehaviourPun
     {
         GameObject realBullet;
 
-        realBullet = PhotonView.Instantiate(bulletPrefab, firePos.transform.position, firePos.transform.rotation);
+        realBullet = PhotonNetwork.Instantiate("Bullet", firePos.transform.position, firePos.transform.rotation);
 
         // È¤½Ã ¸ð¸£´Ï±î
         realBullet.transform.up = transform.up;

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
-
+using Unity.VisualScripting;
 
 public class GameManager : MonoBehaviourPunCallbacks
 {
@@ -50,7 +50,11 @@ public class GameManager : MonoBehaviourPunCallbacks
         cameraPosition.y = Mathf.Clamp01(cameraPosition.y);
 
         Vector3 initPosition = Camera.main.ViewportToWorldPoint(cameraPosition);
-        // Resource 폴더에서만 찾는다
-        myPlayer = PhotonNetwork.Instantiate("Aircraft", initPosition, Quaternion.identity);
+
+        // 캐릭터를 네트워크상에서 동기화하며 생성 Resource 폴더에서만 찾는다
+        GameObject myPlayer = PhotonNetwork.Instantiate("Aircraft", initPosition, Quaternion.identity);
+
+        // 로컬 플레이어(자신)과 게임 내 생성된 플레이어를 오브젝트를 서로 연결하는 방법이다.
+        PhotonNetwork.LocalPlayer.TagObject = myPlayer;
     }
 }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 
-public class PlayerMove : MonoBehaviour, IPunObservable
+public class PlayerMove : MonoBehaviourPunCallbacks, IPunObservable
 {
     public float moveSpeed = 5.0f;
     PhotonView pv;

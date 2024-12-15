@@ -1,11 +1,9 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 
 public class EnemyManager : MonoBehaviourPun
 {
-
     private void Start()
     {
         StartCoroutine(SpawnTime());
@@ -13,10 +11,13 @@ public class EnemyManager : MonoBehaviourPun
 
     IEnumerator SpawnTime()
     {
-        // 무한 루프로 적을 계속 생성 또한 조건이 방장일 때만
-        while(true && PhotonNetwork.IsMasterClient)
+        while (true)
         {
-            GameObject enemy = PhotonNetwork.Instantiate("Enemy",transform.position,Quaternion.identity);
+            // 방장만 적 생성하게 만들기 일단 적 생성 관리는 방장만 하는 게 맞음 이게 없으면 적이 중구 난방으로 생기니까 문제가 있음
+            if (PhotonNetwork.IsMasterClient) 
+            {
+                PhotonNetwork.Instantiate("Enemy", transform.position, Quaternion.identity);
+            }
             yield return new WaitForSeconds(1.5f);
         }
     }

@@ -93,7 +93,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9634fe8b872772e47bd3b5cfad3dd5a7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bulletPrefab: {fileID: 3659224185684012925, guid: b9032eaf3698d4846adff95a7d8544fa, type: 3}
   firePos: {fileID: 5757818098598462162}
 --- !u!136 &1454211774975851527
 CapsuleCollider:

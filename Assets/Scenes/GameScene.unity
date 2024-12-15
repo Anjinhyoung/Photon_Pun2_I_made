@@ -734,7 +734,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c0b99b4b899b3b24baeed6af9bbfcfd7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  EnemyPrefab: {fileID: 6407904826180719184, guid: 793ddf832fa281a45a8aac9b8f697395, type: 3}
 --- !u!4 &517872727
 Transform:
   m_ObjectHideFlags: 0
@@ -1297,7 +1296,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9634fe8b872772e47bd3b5cfad3dd5a7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bulletPrefab: {fileID: 3659224185684012925, guid: b9032eaf3698d4846adff95a7d8544fa, type: 3}
   firePos: {fileID: 241181440}
 --- !u!114 &1057874770
 MonoBehaviour:
@@ -1503,7 +1501,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c0b99b4b899b3b24baeed6af9bbfcfd7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  EnemyPrefab: {fileID: 6407904826180719184, guid: 793ddf832fa281a45a8aac9b8f697395, type: 3}
 --- !u!1 &1269476627
 GameObject:
   m_ObjectHideFlags: 0
@@ -1712,7 +1709,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c0b99b4b899b3b24baeed6af9bbfcfd7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  EnemyPrefab: {fileID: 6407904826180719184, guid: 793ddf832fa281a45a8aac9b8f697395, type: 3}
 --- !u!4 &1956194673
 Transform:
   m_ObjectHideFlags: 0
