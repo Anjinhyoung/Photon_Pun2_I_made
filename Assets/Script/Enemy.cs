@@ -29,46 +29,38 @@ public class Enemy : MonoBehaviourPunCallbacks, IPunObservable
 
     IEnumerator TraceOrDown()
     {
-        yield return new WaitUntil(() => GameManager.gameManager.myPlayer != null);
+        yield return new WaitUntil(() => PhotonNetwork.PlayerList.Length != 0);
 
-        // 랜덤한 값을 뽑자. (0 ~ 9) => 아 잠깐만 여기도 동기화를 해야 할 것 같은데 유레카 내일 해보자
-        int random = Random.Range(1, 10);
-
-        // 40% 확률은 그냥 쭈욱 내려가게 하기
-        if (random < 4)
+        // 랜덤한 값을 뽑자. (0 ~ 9) => 아 잠깐만 여기도 동기화를 해야 할 것 같은데, 방장만 할 수 있고 나머지는 네트워크 전송
+        if (PhotonNetwork.IsMasterClient)
         {
-            // 아 이제 알겠다. (update에서 사용할려면 전역 변수가 필요하다. ,  방향 구하기) 
-            enemy_Dir = Vector3.down;
-
-            // Enemy 생성할 때 이 x: 90, y: 180, z:0 으로 해놓기
-            transform.rotation = Quaternion.Euler(90, 180, 0);
-        }
-        // 60% 확률은 유도탄 처럼 플레이어를 찾아가게 하기
-        else
-        {
+            // 랜덤 값을 방장이 설정
+            int random = Random.Range(1, 10);
             int randomPlayerCount = Random.Range(0, PhotonNetwork.PlayerList.Length);
 
-            Player randomPlayer = PhotonNetwork.PlayerList[randomPlayerCount];
-
-            GameObject player = randomPlayer.TagObject as GameObject;
-
-            if (player != null)
-            {
-                // RPC를 사용해 모든 클라이언트에 추적 방향 동기화
-                pv.RPC("SetEnemyDirection", RpcTarget.All, player.transform.position);
-            }
+            // 랜덤 값을 RPC로 동기화
+            pv.RPC("RPCTraceOrDown", RpcTarget.AllBuffered, random, randomPlayerCount);
         }
     }
 
     [PunRPC]
-    void SetEnemyDirection(Vector3 playerPosition)
+    void RPCTraceOrDown(int random, int randomPlayerCount)
     {
-        // 적의 방향 계산
-        enemy_Dir = playerPosition - transform.position;
-        enemy_Dir.Normalize();
+        // 랜덤한 플레이어 추적
+        Player randomPlayer = PhotonNetwork.PlayerList[randomPlayerCount];
+        int playerID = randomPlayer.ActorNumber;
 
-        // 적 회전 설정
-        transform.rotation = Quaternion.LookRotation(enemy_Dir, Vector3.back);
+        if (GameManager.gameManager.playerCollection.TryGetValue(playerID, out GameObject playerObject))
+        {
+            // 플레이어 오브젝트의 위치를 기반으로 방향 계산
+            enemy_Dir = playerObject.transform.position - transform.position;
+            enemy_Dir.Normalize();
+            transform.rotation = Quaternion.LookRotation(enemy_Dir, Vector3.back);
+        }
+        else
+        {
+            Debug.LogWarning($"Player with ID {playerID} not found in playerCollection.");
+        }
     }
 
     void Update()

@@ -3,13 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 using Unity.VisualScripting;
+using Photon.Realtime;
 
 public class GameManager : MonoBehaviourPunCallbacks
 {
     public static GameManager gameManager;
 
-    // Enemy가 추격하기 위해서 전역 변수가 필요하다.
-    public GameObject myPlayer;
+    GameObject myPlayer;
+
+    public Dictionary<int, GameObject> playerCollection = new Dictionary<int, GameObject>();
 
     private void Awake()
     {
@@ -52,9 +54,42 @@ public class GameManager : MonoBehaviourPunCallbacks
         Vector3 initPosition = Camera.main.ViewportToWorldPoint(cameraPosition);
 
         // 캐릭터를 네트워크상에서 동기화하며 생성 Resource 폴더에서만 찾는다
-        GameObject myPlayer = PhotonNetwork.Instantiate("Aircraft", initPosition, Quaternion.identity);
+        myPlayer = PhotonNetwork.Instantiate("Aircraft", initPosition, Quaternion.identity);
 
-        // 로컬 플레이어(자신)과 게임 내 생성된 플레이어를 오브젝트를 서로 연결하는 방법이다.
-        PhotonNetwork.LocalPlayer.TagObject = myPlayer;
+        // 로컬 플레이어(자신)과 게임 내 생성된 플레이어를 오브젝트를 서로 연결하는 방법이다. 
+        // PhotonNetwork.LocalPlayer.TagObject = myPlayer; => 그러면 딱히 이게 필요가 없는데;;
+
+        // 딱히 로컬 플레이어로 등록할 필요가 없다.
+        RegisterPlayer(myPlayer);
+    }
+
+    public void RegisterPlayer(GameObject player)
+    {
+        int playerID = player.GetComponent<PhotonView>().Owner.ActorNumber;
+        int viewID = player.GetComponent<PhotonView>().ViewID;
+
+        // 모든 클라이언트들이 자신의 플레이어를 마스터 클라이언트에게 등록하도록 등록 RPC 요청
+        photonView.RPC("RPCRegisterPlayer", RpcTarget.MasterClient, playerID, viewID);
+
+    }
+
+    // 이 함수는 기존에 있는 플레이어들을   등록하게 하는 방법
+    [PunRPC]
+    void RPCRegisterPlayer(int playerID, int viewID)
+    {
+        // 마스터 클라이언트에게만 이 메서드 실행
+        if (PhotonNetwork.IsMasterClient)
+        {
+            GameObject player = PhotonView.Find(viewID).gameObject;
+            playerCollection[playerID] = player;
+        }
+    }
+
+    // 새로 들어온 사람이 등록할 때
+    public override void OnPlayerEnteredRoom(Player newPlayer)
+    {
+        base.OnPlayerEnteredRoom(newPlayer);
+
+        photonView.RPC("RPCRegisterPlayer", RpcTarget.MasterClient, newPlayer.ActorNumber);
     }
 }
