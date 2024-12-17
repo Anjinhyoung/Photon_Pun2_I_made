@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 
-public class PlayerMove : MonoBehaviourPunCallbacks, IPunObservable
+public class PlayerMove : MonoBehaviourPun, IPunObservable
 {
     public float moveSpeed = 5.0f;
     PhotonView pv;
@@ -21,9 +21,6 @@ public class PlayerMove : MonoBehaviourPunCallbacks, IPunObservable
     void Update()
     {
         Move();
-
-        // int ping = PhotonNetwork.GetPing();
-        //Debug.Log("현재 Ping: " + ping + "ms");
     }
 
     private void Move()
@@ -62,9 +59,9 @@ public class PlayerMove : MonoBehaviourPunCallbacks, IPunObservable
         else
         {
             // transform.position은 상대방의 현재 위치, otherPos는 네트워크를 통해 수신된 목표 위치 targetPos는 보간된 위치
-             Vector3 targetPos = Vector3.Lerp(otherPrevPos, otherPos, Time.deltaTime * 50); // 핑이 너무 높아서 50정도로 하는 게 좋을 듯 그나마 50정도가 싱크가 잘 맞음
-             float dist = (targetPos - otherPrevPos).magnitude;
-             transform.position = dist > 0.01f ? targetPos : otherPrevPos;
+             Vector3 targetPos = Vector3.Lerp(otherPos, transform.position, Time.deltaTime * 50); // 핑이 너무 높아서 50정도로 하는 게 좋을 듯 그나마 50정도가 싱크가 잘 맞음
+             float dist = (targetPos - otherPos).magnitude;
+             transform.position = dist > 0.01f ? targetPos : otherPos;
         }
     }
 
@@ -82,12 +79,11 @@ public class PlayerMove : MonoBehaviourPunCallbacks, IPunObservable
         // 그렇지 않고, 만일 데이터를 서버로부터 읽어오는 상태라면
         else if (stream.IsReading)
         {
-            // otherPos가 네트워크를 통해 받은 위치로 업데이트 된다.
+            // otherPos가 네트워크를 통해 받은 위치로 업데이트 된다. (얘가 더 느리다.)
             otherPos = (Vector3)stream.ReceiveNext();
 
-            // 이전 위치 저장
-            otherPrevPos = otherPos;
-
+            // 이전 위치 저장 => 잠깐만 이거 없이도 괜찮은지 한 번 해보기
+            // otherPrevPos = otherPos;
         }
     }
 }

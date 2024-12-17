@@ -45,6 +45,11 @@ MonoBehaviour:
   - SetEnemyDirection
   - RPCTraceOrDown
   - RPCRegisterPlayer
+  - RPC_Determine_Dir
+  - RPC_Register_Player
+  - RPC_RegisterPlayer
+  - RpcDestroy
+  - RpcBullet
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 0
