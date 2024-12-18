@@ -59,7 +59,7 @@ public class PlayerMove : MonoBehaviourPun, IPunObservable
         else
         {
             // transform.position은 상대방의 현재 위치, otherPos는 네트워크를 통해 수신된 목표 위치 targetPos는 보간된 위치
-             Vector3 targetPos = Vector3.Lerp(otherPos, transform.position, Time.deltaTime * 50); // 핑이 너무 높아서 50정도로 하는 게 좋을 듯 그나마 50정도가 싱크가 잘 맞음
+             Vector3 targetPos = Vector3.Lerp(transform.position, otherPos, Time.deltaTime * 50); // 핑이 너무 높아서 50정도로 하는 게 좋을 듯 그나마 50정도가 싱크가 잘 맞음
              float dist = (targetPos - otherPos).magnitude;
              transform.position = dist > 0.01f ? targetPos : otherPos;
         }

@@ -11,6 +11,9 @@ public class EnemyManager : MonoBehaviourPun
 
     IEnumerator SpawnTime()
     {
+        // 혹시 몰라서 추가 장치를 해놨음
+        yield return new WaitUntil(() => PhotonNetwork.InRoom && PhotonNetwork.PlayerList.Length != 0);
+
         while (true)
         {
             // 방장만 적 생성하게 만들기 일단 적 생성 관리는 방장만 하는 게 맞음 이게 없으면 적이 중구 난방으로 생기니까 문제가 있음

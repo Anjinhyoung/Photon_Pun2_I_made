@@ -18,16 +18,20 @@ public class Enemy : MonoBehaviourPun, IPunObservable
     Vector3 worldPostion;
     Quaternion worldRotation;
 
-    // PhotonView pv;
+    PhotonView pv;
 
     void Start()
     {
         StartCoroutine(Determine_Dir());
-        // pv = GetComponent<PhotonView>();
+        pv = GetComponent<PhotonView>();
+
+        // 혹시 몰라서 초기 값 정해주고(에러 안 나게)
+        worldPostion = transform.position;
+        worldRotation = transform.rotation;
     }
     IEnumerator Determine_Dir()
     {
-        yield return new WaitUntil(() => PhotonNetwork.PlayerList.Length != 0);
+        yield return new WaitUntil(() => PhotonNetwork.InRoom && PhotonNetwork.PlayerList.Length != 0);
 
         // 방장이 모든 걸 결정하기
         if (PhotonNetwork.IsMasterClient)
@@ -36,7 +40,7 @@ public class Enemy : MonoBehaviourPun, IPunObservable
             int random = Random.Range(0, PhotonNetwork.PlayerList.Length);
 
             // 랜덤 값을 RPC로 동기화 (실제 네트워크 환경에서는 모든 클라이언트 간 정확한 동기화가 즉각적으로 이뤄지지 않는다.)
-            photonView.RPC("RPC_Determine_Dir", RpcTarget.AllBuffered, random);
+            pv.RPC("RPC_Determine_Dir", RpcTarget.AllBuffered, random);
         }
     }
 
@@ -67,6 +71,7 @@ public class Enemy : MonoBehaviourPun, IPunObservable
         if (!PhotonNetwork.IsMasterClient)
         {
             transform.position = Vector3.Lerp(transform.position, worldPostion, Time.deltaTime * 10f);
+            // 여기서 오류가 났는데...? b가 방장일 경우
             transform.rotation = Quaternion.Lerp(transform.rotation, worldRotation, Time.deltaTime * 10f);
         }
 
