@@ -22,7 +22,7 @@ public class EnemyManager : MonoBehaviourPun
                 // RPC가 딱히 필요 없다. 
                 PhotonNetwork.Instantiate("Enemy", transform.position, Quaternion.Euler(90, 180, 0));
             }
-            yield return new WaitForSeconds(1.5f);
+            yield return new WaitForSeconds(5.5f);
         }
     }
 }

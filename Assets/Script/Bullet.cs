@@ -1,6 +1,7 @@
 using System.Collections;
 using UnityEngine;
 using Photon.Pun;
+using System;
 
 public class Bullet : MonoBehaviourPun,IPunObservable
 {
@@ -13,14 +14,13 @@ public class Bullet : MonoBehaviourPun,IPunObservable
     Vector3 prevPosition;
 
     PhotonView pv;
-
     private void Start()
     {
         pv = GetComponent<PhotonView>();
 
         if (pv == null)
         {
-            Debug.LogError("PhotonView is not assigned or missing!");
+            Debug.LogError("포톤 뷰가 없습니다.");
         }
     }
 
@@ -40,28 +40,42 @@ public class Bullet : MonoBehaviourPun,IPunObservable
 
     private void OnTriggerEnter(Collider other)
     {
+        // RPC 호출 때문에 1. 적을 먼저 제거 2. 그 다음 총알을 제거
         if (other.gameObject.layer == LayerMask.NameToLayer("Enemy"))
         {
-            // 마스터 클라이언트가 아니라면 마스터 클라이언트에게 Enemy 삭제 요청
-            if (!PhotonNetwork.IsMasterClient)
-            {
-                if(other.GetComponent<PhotonView>().ViewID == null)
-                {
-                    print("왜 Enemy의 id가 없지?");
-                }
-                // 여기서 오류가 나네? 왜지 => 여기서 또 오류가 난다. 근데 또 오류가 안 나 뭐지?
-                pv.RPC("RpcDestroy", RpcTarget.MasterClient, other.GetComponent<PhotonView>().ViewID);
-            }
-            // 마스터 클라이언트이면 Enemy 직접 삭제
-            else
-            {
-                PhotonNetwork.Destroy(other.gameObject);
-            }
+                PhotonView otherPhotonView = other.GetComponent<PhotonView>();
 
-            // bullet 삭제 생각해보니까 if 문 안에 if문은 따로 필요 없는 거 같다.  
-            if (pv.IsMine)
-            {
-                PhotonNetwork.Destroy(gameObject);
+                // 마스터 클라이언트가 아닌 경우
+                if (!PhotonNetwork.IsMasterClient)
+                {
+                    try
+                    {
+                        pv.RPC("RpcDestroy", RpcTarget.MasterClient, otherPhotonView.ViewID);
+                    }
+                    catch (NullReferenceException)
+                    {
+                        // 네트워크 지연으로 인한 NullReference는 무시
+                        // 어차피 객체들은 결국 제거될 것이므로 경고 로그도 출력하지 않음
+                        return;
+                    }
+                }
+                else
+                {
+                    PhotonNetwork.Destroy(other.gameObject);
+                }
+
+                if (pv.IsMine)
+                {
+                    try
+                    {
+                        PhotonNetwork.Destroy(gameObject);
+                    }
+                    catch (NullReferenceException)
+                    {
+                        // 네트워크 지연으로 인한 NullReference는 무시
+                        // 어차피 객체들은 결국 제거될 것이므로 경고 로그도 출력하지 않음
+                        return;
+                    }
             }
         }
     }
@@ -69,16 +83,22 @@ public class Bullet : MonoBehaviourPun,IPunObservable
     [PunRPC]
     void RpcDestroy(int viewID)
     {
-        // 혹시 이거 때문에 그런 건가? 아무 클라이언트에서 다 실행되는 거니까 오류 나는 건가?
         if (PhotonNetwork.IsMasterClient)
         {
             PhotonView targetView = PhotonView.Find(viewID);
-            if (targetView != null)
+            try
             {
+                // 바로 삭제
                 PhotonNetwork.Destroy(targetView.gameObject);
             }
+
+            catch (NullReferenceException)
+            {
+                return;
+            }            
         }
     }
+
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
