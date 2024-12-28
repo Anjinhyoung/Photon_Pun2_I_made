@@ -12,72 +12,46 @@ EditorBuildSettings:
     path: Assets/Scenes/GameScene.unity
     guid: 67d1b508569705048bae724a4e4639e3
   - enabled: 0
-    path: Assets/Bullet Master 3D/Scenes/Main.unity
-    guid: 5e01a1c3328f90044a4b3cdf45f403ec
+    path: Assets/Photon/PhotonUnityNetworking/Demos/DemoHub/DemoHub-Scene.unity
+    guid: 7dfd47dc8b9484dd79d8636d8603a9e5
   - enabled: 0
-    path: Assets/Bullet Master 3D/Scenes/Level_1.unity
-    guid: f4b41f2959e89124da7761ea8019ee0b
+    path: Assets/Photon/PhotonChat/Demos/DemoChat/DemoChat-Scene.unity
+    guid: ec07267f6a28fb044ac89845274e79af
   - enabled: 0
-    path: Assets/Bullet Master 3D/Scenes/Level_2.unity
-    guid: 64674bcc8745a8348bc37c3c86a3451f
+    path: Assets/Photon/PhotonUnityNetworking/Demos/DemoProcedural/Procedural-Scene.unity
+    guid: e1fad393017993c4893877b645062417
   - enabled: 0
-    path: Assets/Bullet Master 3D/Scenes/Level_3.unity
-    guid: e8adddaabed5bfa4a92e9394405ee99b
+    path: Assets/Photon/PhotonUnityNetworking/Demos/DemoSlotRacer/SlotCar-Scene.unity
+    guid: 711b38c07f2cf904f81b3422c67f1825
   - enabled: 0
-    path: Assets/Bullet Master 3D/Scenes/Level_4.unity
-    guid: f874ea6647634dd4987a08af513d6b1e
+    path: Assets/Photon/PhotonUnityNetworking/Demos/PunCockpit/PunCockpit-Scene.unity
+    guid: 9d6d60c803e244e51ba945a84b88757d
   - enabled: 0
-    path: Assets/Bullet Master 3D/Scenes/Level_5.unity
-    guid: 579d0d4767526ea4cbacf7b4bace44a8
+    path: Assets/Photon/PhotonUnityNetworking/Demos/DemoAsteroids/Scenes/DemoAsteroids-GameScene.unity
+    guid: 98efc37d6307844488eb3e4247dde7e9
   - enabled: 0
-    path: Assets/Bullet Master 3D/Scenes/Level_6.unity
-    guid: 183e1b696811f534b844f799e4e8aba2
+    path: Assets/Photon/PhotonUnityNetworking/Demos/DemoAsteroids/Scenes/DemoAsteroids-LobbyScene.unity
+    guid: c8a9d1312a49dc8488a9b32d83d659c7
   - enabled: 0
-    path: Assets/Bullet Master 3D/Scenes/Level_7.unity
-    guid: 0fa9a6366199cae4b89d34246cb4e49a
+    path: Assets/Photon/PhotonUnityNetworking/Demos/PunBasics-Tutorial/Scenes/PunBasics-Launcher.unity
+    guid: bff77b01b50254edbb6edeeaba5ae8b3
   - enabled: 0
-    path: Assets/Bullet Master 3D/Scenes/Level_8.unity
-    guid: 861041101c0b8df4daeed64ffa2e5ce3
+    path: Assets/Photon/PhotonUnityNetworking/Demos/PunBasics-Tutorial/Scenes/PunBasics-Room
+      for 1.unity
+    guid: 9b8561c6e396849a5ba48c3eb9524049
   - enabled: 0
-    path: Assets/Bullet Master 3D/Scenes/Level_9.unity
-    guid: 0afb06376a62ea3469c804ba785b759b
+    path: Assets/Photon/PhotonUnityNetworking/Demos/PunBasics-Tutorial/Scenes/PunBasics-Room
+      for 2.unity
+    guid: 764428c63577f4580af4ce54ca9f4b1b
   - enabled: 0
-    path: Assets/Bullet Master 3D/Scenes/Level_10.unity
-    guid: 7929de1ef33c297448d84984878f6f0f
+    path: Assets/Photon/PhotonUnityNetworking/Demos/PunBasics-Tutorial/Scenes/PunBasics-Room
+      for 3.unity
+    guid: e07afcca5bf1a41f5bd28f498656b7b8
   - enabled: 0
-    path: Assets/Bullet Master 3D/Scenes/Level_11.unity
-    guid: 2e0c492b7d2d6594cb0044832aa136cf
+    path: Assets/Photon/PhotonUnityNetworking/Demos/PunBasics-Tutorial/Scenes/PunBasics-Room
+      for 4.unity
+    guid: e7a7f9734636d415ca84ef3aaf7680f6
   - enabled: 0
-    path: Assets/Bullet Master 3D/Scenes/Level_12.unity
-    guid: 6c800bfde1a363847a766febde7382ff
-  - enabled: 0
-    path: Assets/Bullet Master 3D/Scenes/Level_13.unity
-    guid: 0dcac7e149b117248a937afe407e1be7
-  - enabled: 0
-    path: Assets/Bullet Master 3D/Scenes/Level_14.unity
-    guid: 4bd9fffbfc04e4245bdcbaa809668fca
-  - enabled: 0
-    path: Assets/Bullet Master 3D/Scenes/Level_15.unity
-    guid: 8c3b1d5290ec2d042b2214bb96ab6e8d
-  - enabled: 0
-    path: Assets/Bullet Master 3D/Scenes/Level_16.unity
-    guid: 71b9afe89710658499bce48010af1889
-  - enabled: 0
-    path: Assets/Bullet Master 3D/Scenes/Level_17.unity
-    guid: aa286e2bbd5097143904d87a2d69e36f
-  - enabled: 0
-    path: Assets/Bullet Master 3D/Scenes/Level_18.unity
-    guid: 1caa34520e39ad04b8c37de8b941e9c6
-  - enabled: 0
-    path: Assets/Bullet Master 3D/Scenes/Level_19.unity
-    guid: 8e9d103b98377fa46af22b1ac155e822
-  - enabled: 0
-    path: Assets/Bullet Master 3D/Scenes/Level_20.unity
-    guid: 056b5cd5767cf8c42a48cf322ce61015
-  - enabled: 0
-    path: Assets/Bullet Master 3D/Scenes/Level_21.unity
-    guid: 2624684062f43af4695979e091ae9a39
-  - enabled: 0
-    path: Assets/Bullet Master 3D/Scenes/Level_22.unity
-    guid: c252212d93d9850479b6488a899d40f3
+    path: Assets/Photon/PhotonUnityNetworking/Demos/DemoSlotRacer/SlotCar-Scene.unity
+    guid: 711b38c07f2cf904f81b3422c67f1825
   m_configObjects: {}

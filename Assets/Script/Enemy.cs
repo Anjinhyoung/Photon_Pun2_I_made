@@ -31,7 +31,7 @@ public class Enemy : MonoBehaviourPun, IPunObservable
     }
     IEnumerator Determine_Dir()
     {
-        yield return new WaitUntil(() => PhotonNetwork.InRoom && PhotonNetwork.PlayerList.Length != 0);
+        yield return new WaitUntil(() => PhotonNetwork.InRoom && PhotonNetwork.PlayerList.Length >= 2);
 
         // 방장이 모든 걸 결정하기
         if (PhotonNetwork.IsMasterClient)

@@ -33,61 +33,10 @@ public class Bullet : MonoBehaviourPun,IPunObservable
 
         else
         {
-            /*
-            Vector3 targetPos = Vector3.Lerp(transform.position, otherPosition, Time.deltaTime * 50);
-            float dist = (targetPos - otherPosition).magnitude;
-            transform.position = dist > 0.01f ? targetPos : otherPosition;
-            */
             transform.position = otherPosition; 
         }
     }
 
-    /*
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.gameObject.layer == LayerMask.NameToLayer("Enemy") && PhotonNetwork.IsMasterClient)
-        {
-            // a. 마스터 클라이언트 화면에서 마스터 클라이언트의 총알이 적을 맞는 경우
-            if (gameObject.GetComponent<PhotonView>().IsMine)
-            {
-                // 마스터 클라이언트 총알 삭제
-                PhotonNetwork.Destroy(gameObject);
-                // Enemy 삭제
-                PhotonNetwork.Destroy(other.gameObject);
-            }
-            // b. 마스터 클라이언트 화면에서 다른 클라이언트 총알이 적을 맞추는 경우
-            else
-            {
-                // 다른 클라이언트 총알 삭제
-                photonView.RPC("RpcBullet", RpcTarget.All, gameObject.GetComponent<PhotonView>().ViewID);
-                // Enemy 삭제
-                PhotonNetwork.Destroy(other.gameObject);
-            }
-        }
-
-        else if (other.gameObject.layer == LayerMask.NameToLayer("Enemy") && !PhotonNetwork.IsMasterClient)
-        {
-            // c. 다른 클라이언트 화면에서 해당 클라이언트의 총알이 적을 맞는 경우
-            if (gameObject.GetComponent<PhotonView>().IsMine)
-            {
-                // Enemy 삭제
-                photonView.RPC("RpcDestroy", RpcTarget.MasterClient, gameObject.GetComponent<PhotonView>().ViewID);
-                // 총알 삭제
-                PhotonNetwork.Destroy(gameObject);
-              
-            }
-            // 다른 클라이언트 사람에서 다른 사람의 총알이 적을 맞추는 경우
-            else
-            {
-                // 다른 사람의 총알 삭제
-                photonView.RPC("RpcBullet", RpcTarget.All, gameObject.GetComponent<PhotonView>().ViewID);
-
-                // Enemy 삭제
-                photonView.RPC("RpcDestroy", RpcTarget.MasterClient, gameObject.GetComponent<PhotonView>().ViewID);
-            }
-        }
-    }
-    */
 
     private void OnTriggerEnter(Collider other)
     {
@@ -96,12 +45,11 @@ public class Bullet : MonoBehaviourPun,IPunObservable
             // 마스터 클라이언트가 아니라면 마스터 클라이언트에게 Enemy 삭제 요청
             if (!PhotonNetwork.IsMasterClient)
             {
-                // 이 if문이 추가 되니까 갑잘기 오류가 안 난다... 뭐지?
                 if(other.GetComponent<PhotonView>().ViewID == null)
                 {
-                    Debug.Log("Enemy의 View id가 없습니다.");
+                    print("왜 Enemy의 id가 없지?");
                 }
-                // 여기서 오류가 나네? 왜지
+                // 여기서 오류가 나네? 왜지 => 여기서 또 오류가 난다. 근데 또 오류가 안 나 뭐지?
                 pv.RPC("RpcDestroy", RpcTarget.MasterClient, other.GetComponent<PhotonView>().ViewID);
             }
             // 마스터 클라이언트이면 Enemy 직접 삭제
