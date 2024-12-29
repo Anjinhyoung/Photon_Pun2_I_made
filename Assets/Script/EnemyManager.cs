@@ -12,7 +12,7 @@ public class EnemyManager : MonoBehaviourPun
     IEnumerator SpawnTime()
     {
         // 혹시 몰라서 추가 장치를 해놨음
-        yield return new WaitUntil(() => PhotonNetwork.InRoom && PhotonNetwork.PlayerList.Length >= 2);
+        yield return new WaitUntil(() => PhotonNetwork.InRoom && PhotonNetwork.PlayerList.Length >= 1);
 
         while (true)
         {

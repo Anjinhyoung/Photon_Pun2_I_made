@@ -5,7 +5,6 @@ using UnityEngine.UI;
 
 public class HpSystem : MonoBehaviour
 {
-   
     public static HpSystem hpSystem;
 
     // UI 슬라이더(플레이어 체력)
@@ -26,14 +25,20 @@ public class HpSystem : MonoBehaviour
         }
     }
 
+    private void Start()
+    {
+        print(hp_Var.maxValue);
+    }
+
+
     public void Damage(int damage)
     {
         hp_Var.value -= damage;
+        print(hp_Var.value);
 
-        if(hp_Var.value == 0)
+        if(hp_Var.value <= 0)
         {
             Destroy(var);
         }
-
     }
 }

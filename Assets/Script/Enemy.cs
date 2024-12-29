@@ -18,20 +18,16 @@ public class Enemy : MonoBehaviourPun, IPunObservable
     Vector3 worldPostion;
     Quaternion worldRotation;
 
-    PhotonView pv;
-
     void Start()
     {
         StartCoroutine(Determine_Dir());
-        pv = GetComponent<PhotonView>();
-
         // 혹시 몰라서 초기 값 정해주고(에러 안 나게)
         worldPostion = transform.position;
         worldRotation = transform.rotation;
     }
     IEnumerator Determine_Dir()
     {
-        yield return new WaitUntil(() => PhotonNetwork.InRoom && PhotonNetwork.PlayerList.Length >= 2);
+        yield return new WaitUntil(() => PhotonNetwork.InRoom && PhotonNetwork.PlayerList.Length >= 1);
 
         // 방장이 모든 걸 결정하기
         if (PhotonNetwork.IsMasterClient)
@@ -40,7 +36,7 @@ public class Enemy : MonoBehaviourPun, IPunObservable
             int random = Random.Range(0, PhotonNetwork.PlayerList.Length);
 
             // 랜덤 값을 RPC로 동기화 (실제 네트워크 환경에서는 모든 클라이언트 간 정확한 동기화가 즉각적으로 이뤄지지 않는다.)
-            pv.RPC("RPC_Determine_Dir", RpcTarget.AllBuffered, random);
+            photonView.RPC("RPC_Determine_Dir", RpcTarget.AllBuffered, random);
         }
     }
 
@@ -95,6 +91,24 @@ public class Enemy : MonoBehaviourPun, IPunObservable
             // 모든 클라이언트가 데이터를 받아서 적용
             worldPostion = (Vector3)stream.ReceiveNext();
             worldRotation = (Quaternion)stream.ReceiveNext();
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if(other.gameObject.layer == LayerMask.NameToLayer("Player"))
+        {
+            HpSystem.hpSystem.Damage(1);
+            photonView.RPC("OnDestroy",RpcTarget.MasterClient);
+        }
+    }
+
+    [PunRPC]
+    private void OnDestroy()
+    {
+        if (PhotonNetwork.IsMasterClient)
+        {
+            PhotonNetwork.Destroy(gameObject);
         }
     }
 }

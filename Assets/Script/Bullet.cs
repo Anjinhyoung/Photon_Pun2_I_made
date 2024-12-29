@@ -10,23 +10,9 @@ public class Bullet : MonoBehaviourPun,IPunObservable
 
     // 총알의 네트워크, 로컬 포지션
     Vector3 otherPosition;
-
-    Vector3 prevPosition;
-
-    PhotonView pv;
-    private void Start()
-    {
-        pv = GetComponent<PhotonView>();
-
-        if (pv == null)
-        {
-            Debug.LogError("포톤 뷰가 없습니다.");
-        }
-    }
-
     void Update()
     {
-        if (pv.IsMine)
+        if (photonView.IsMine)
         {
             transform.position += transform.up * bullet_Speed * Time.deltaTime;
         }
@@ -43,39 +29,36 @@ public class Bullet : MonoBehaviourPun,IPunObservable
         // RPC 호출 때문에 1. 적을 먼저 제거 2. 그 다음 총알을 제거
         if (other.gameObject.layer == LayerMask.NameToLayer("Enemy"))
         {
-                PhotonView otherPhotonView = other.GetComponent<PhotonView>();
+            // GetComponent는 상대적으로 비용이 큰 메서드이므로 반복 호출은 비효율적
+            PhotonView enemyPhotonView = other.GetComponent<PhotonView>();
 
-                // 마스터 클라이언트가 아닌 경우
-                if (!PhotonNetwork.IsMasterClient)
+            // 방장이 아닌 경우
+            if (!PhotonNetwork.IsMasterClient)
+            {
+                photonView.RPC("RpcDestroy", RpcTarget.MasterClient, enemyPhotonView.ViewID);
+            }
+            // 방장인 경우
+            else
+            {
+                // 네트워크 오류 방지 코드
+                if(enemyPhotonView == null)
                 {
-                    try
-                    {
-                        pv.RPC("RpcDestroy", RpcTarget.MasterClient, otherPhotonView.ViewID);
-                    }
-                    catch (NullReferenceException)
-                    {
-                        // 네트워크 지연으로 인한 NullReference는 무시
-                        // 어차피 객체들은 결국 제거될 것이므로 경고 로그도 출력하지 않음
-                        return;
-                    }
+                    return;
                 }
-                else
-                {
-                    PhotonNetwork.Destroy(other.gameObject);
-                }
+                // 소유자가 아니면 오브젝트를 삭제할 권리가 없다.
+                PhotonNetwork.Destroy(other.gameObject);
+            }
 
-                if (pv.IsMine)
-                {
-                    try
-                    {
-                        PhotonNetwork.Destroy(gameObject);
-                    }
-                    catch (NullReferenceException)
-                    {
-                        // 네트워크 지연으로 인한 NullReference는 무시
-                        // 어차피 객체들은 결국 제거될 것이므로 경고 로그도 출력하지 않음
-                        return;
-                    }
+            // 네트워크 지연 오류 방지 코드
+            if(photonView == null)
+            {
+                return;
+            }
+
+            if (photonView.IsMine)
+            {
+                PhotonNetwork.Destroy(gameObject); // 오브젝트 파괴
+                ScoreManager.scoreManager.CurrentScore = 1; // 내 클라이언트 점수 증가
             }
         }
     }
@@ -86,20 +69,14 @@ public class Bullet : MonoBehaviourPun,IPunObservable
         if (PhotonNetwork.IsMasterClient)
         {
             PhotonView targetView = PhotonView.Find(viewID);
-            try
-            {
-                // 바로 삭제
-                PhotonNetwork.Destroy(targetView.gameObject);
-            }
-
-            catch (NullReferenceException)
+            // 네트워크 지연 오류 방지 코드
+            if(targetView == null)
             {
                 return;
-            }            
+            }
+            PhotonNetwork.Destroy(targetView.gameObject);
         }
     }
-
-
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
         if (stream.IsWriting)

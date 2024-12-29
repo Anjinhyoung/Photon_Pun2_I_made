@@ -50,6 +50,11 @@ MonoBehaviour:
   - RPC_RegisterPlayer
   - RpcDestroy
   - RpcBullet
+  - OnDestroy
+  - Other_AddScroe
+  - Other_AddScore
+  - AddScore
+  - RPC_IncreaseOtherScore
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 0
